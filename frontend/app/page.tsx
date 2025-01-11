@@ -1,3 +1,5 @@
+"use client";
+
 import { UserContext } from "@/contexts/UserContext";
 import { loadUser } from "@/lib/localStorage";
 import { User } from "@/types/user";
