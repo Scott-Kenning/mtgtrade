@@ -1,10 +1,6 @@
 const express = require('express');
 const router = express.Router();
 
-router.get('/', (req, res) => {
-    res.send('users route');
-});
-
 // find other users
 
 router.get('/:user/topTraders', (req, res) => {
@@ -12,7 +8,7 @@ router.get('/:user/topTraders', (req, res) => {
     // MUST HAVE
 });
 
-router.get('/search/:userid', (req, res) => {
+router.get('/:user', (req, res) => {
     res.send('find other users');
     // MIGHT HAVE
 });
