@@ -6,7 +6,7 @@ router.get('/search/:substring', (req, res) => {
 
     const { substring } = req.params;
 
-    // SELECT * FROM cards WHERE name LIKE %substring%
+    // cards = SELECT * FROM cards WHERE name LIKE %substring%
 
     return { cards: [] };
 });
