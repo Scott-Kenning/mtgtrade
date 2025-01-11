@@ -2,7 +2,7 @@ import Link from "next/link"
 
 const NavBar = () => {
     return (
-        <nav className="px-8 py-4 w-screen bg-purple-950 flex justify-between">
+        <nav className="px-8 py-4 w-screen bg-purple-950 flex justify-between mb-8">
             <p>Logo</p>
             <ul className="flex gap-4">
                 <li>

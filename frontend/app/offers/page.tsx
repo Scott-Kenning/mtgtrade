@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import Container from "@/components/ui/container";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-const cards = [
+const offers = [
     {
         id: 1,
         name: "Card 1",
@@ -29,22 +29,21 @@ const cards = [
     }
 ]
 
-const Cards = () => {
+const Offers = () => {
     return (
         <Container>
-            <Tabs defaultValue="owned" className="w-[100%] dark">
+            <Tabs defaultValue="sent" className="w-[100%] dark">
                 <TabsList className="w-[100%]">
-                    <TabsTrigger className="w-[100%]" value="owned">Owned</TabsTrigger>
-                    <TabsTrigger value="wanted" className="w-[100%]">Wanted</TabsTrigger>
+                    <TabsTrigger className="w-[100%]" value="sent">Sent</TabsTrigger>
+                    <TabsTrigger value="recieved" className="w-[100%]">Recieved</TabsTrigger>
                 </TabsList>
-                <TabsContent value="owned">
-                    <AddCard page={"owned"}/>
-                    <CardsList cards={cards} />
+                <TabsContent value="sent">
                 </TabsContent>
-                <TabsContent value="wanted">Change your password here.</TabsContent>
+                <TabsContent value="recieved">
+                </TabsContent>
             </Tabs>
         </Container>
     )
 }
 
-export default Cards;
+export default Offers;
