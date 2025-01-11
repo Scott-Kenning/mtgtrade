@@ -1,17 +1,43 @@
+"use client";
+
 import { GalleryVerticalEnd } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { FormEvent, useState } from "react";
+import useUser from "@/hooks/user";
+import { api } from "@/lib/api";
+import { User } from "@/types/user";
+import { useRouter } from "next/navigation";
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"div">) {
+  const router = useRouter();
+
+  const [email, setEmail] = useState("");
+  const { setUser } = useUser();
+
+  const login = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log("Login", email);
+
+    const res = await api.get(`/users`, { params: { email: email } });
+    if (res.status === 200) {
+      const user = res.data as User;
+      setUser(user);
+      router.push("/");
+    } else {
+      alert("OOPSIE DAISIES!!!!!!");
+    }
+  };
+
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <form>
+      <form onSubmit={login}>
         <div className="flex flex-col gap-6">
           <div className="flex flex-col items-center gap-2">
             <a
@@ -39,6 +65,8 @@ export function LoginForm({
                 type="email"
                 placeholder="m@example.com"
                 required
+                onChange={(e) => setEmail(e.target.value)}
+                value={email}
               />
             </div>
             <Button type="submit" className="w-full">
