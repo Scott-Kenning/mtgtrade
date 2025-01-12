@@ -1,49 +1,39 @@
-'use client'
+"use client";
 
 import AddCard from "@/components/add-card";
 import CardsList from "@/components/card-list";
+import OfferList from "@/components/offer-list";
 import { Button } from "@/components/ui/button";
 import Container from "@/components/ui/container";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { OfferType } from "@/types/types";
 
-const offers = [
-    {
-        id: 1,
-        name: "Card 1",
-        set: "ABC"
-    },
-    {
-        id: 2,
-        name: "Card 2",
-        set: "ABC"
-    },
-    {
-        id: 3,
-        name: "Card 3",
-        set: "ABC"
-    },
-    {
-        id: 4,
-        name: "Card 4",
-        set: "ABC"
-    }
-]
+const offer: OfferType = {
+  id: 1,
+  offeringUserId: 1,
+  offeredCards: [{ id: 1, name: "a", set: "a" }],
+  requestedCards: [{ id: 2, name: "b", set: "b" }],
+};
 
 const Offers = () => {
-    return (
-        <Container>
-            <Tabs defaultValue="sent" className="w-[100%] dark">
-                <TabsList className="w-[100%]">
-                    <TabsTrigger className="w-[100%]" value="sent">Sent</TabsTrigger>
-                    <TabsTrigger value="recieved" className="w-[100%]">Recieved</TabsTrigger>
-                </TabsList>
-                <TabsContent value="sent">
-                </TabsContent>
-                <TabsContent value="recieved">
-                </TabsContent>
-            </Tabs>
-        </Container>
-    )
-}
+  return (
+    <Container>
+      <Tabs defaultValue="sent" className="w-[100%] dark">
+        <TabsList className="w-[100%]">
+          <TabsTrigger value="recieved" className="w-[100%]">
+            Recieved
+          </TabsTrigger>
+          <TabsTrigger className="w-[100%]" value="sent">
+            Sent
+          </TabsTrigger>
+        </TabsList>
+        <TabsContent value="recieved">
+          <OfferList offers={[offer]} />
+        </TabsContent>
+        <TabsContent value="sent"></TabsContent>
+      </Tabs>
+    </Container>
+  );
+};
 
 export default Offers;

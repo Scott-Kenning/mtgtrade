@@ -5,8 +5,9 @@ import CardsList from "@/components/card-list";
 import { Button } from "@/components/ui/button";
 import Container from "@/components/ui/container";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { CardType } from "@/types/types";
 
-const cards = [
+const cards: CardType[] = [
     {
         id: 1,
         name: "Card 1",

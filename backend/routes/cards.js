@@ -1,14 +1,23 @@
 const express = require('express');
+const supabase = require('../supabase');
 const router = express.Router();
 
-router.get('/search/:substring', (req, res) => {
-    res.send('search for specific card based on substr');
 
+// Usage: cards/search/cardName
+router.get('/search/:substring', async (req, res) => {
+    // res.send('search for specific card based on substr');
     const { substring } = req.params;
 
-    // cards = SELECT * FROM cards WHERE name LIKE %substring%
+    try {
+        const cards = await supabase.from('card').select('*').ilike('name', "%" + substring + "%");
+        return res.status(200).send({ cards: cards });
+    }
+    catch (err) {
+        console.log(err);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
 
-    return { cards: [] };
 });
+
 
 module.exports = router;
