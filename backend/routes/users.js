@@ -1,4 +1,5 @@
 const express = require('express');
+const supabase = require('../supabase');
 const router = express.Router();
 
 router.post('/', (req, res) => {
@@ -8,17 +9,20 @@ router.post('/', (req, res) => {
     // INSERT INTO users (email) VALUES (email)
 });
 
-router.get('/:user', (req, res) => {
+router.get('/', async (req, res) => {
+    const user = req.query.user;
     res.send('find users info');
+    console.log(`user: ${user}`);
 
-    let ownedCards = [];
-    let requestedCards = [];
-    let activeTrades = [];
+    // ownedCards = SELECT cardId FROM owned_cards WHERE email = user
+    let ownedCards = await supabase.from('owned_cards').select('cardId').eq('email', user);
+    // let ownedCards = await supabase.from('owned_cards').select('*');
+    // requestedCards = SELECT cardId FROM requested_cards WHERE email = user
+    let requestedCards = await supabase.from('requested_cards').select('cardId').eq('email', user);
+    // activeTrades = SELECT * FROM trades WHERE offeree = (SELECT userId FROM users WHERE email = user) status = 'active'
+    let activeTrades = await supabase.from('trades').select('*').eq('offeree', user).eq('status', 'active');
 
-    // ownedCards = SELECT cardId FROM owned_cards WHERE userId = userId
-    // requestedCards = SELECT cardId FROM requested_cards WHERE userId = userId
-    // activeTrades = SELECT * FROM trades WHERE offeree = userId AND status = 'active'
-
+    console.log(`ownedCards: ${ownedCards.data}, requestedCards: ${requestedCards.data}, activeTrades: ${activeTrades.data}`);
     return { 
         ownedCards: ownedCards,
         requestedCards: requestedCards, 
@@ -29,7 +33,8 @@ router.get('/:user', (req, res) => {
 // find other users
 
 // MUST HAVE
-router.get('/:user/topTraders', (req, res) => {
+router.get('/topTraders', (req, res) => {
+    const user = req.query.user;
     res.send('find best matches of other users to trade with');
 
     // select top 10 users with most cards in common (between owned_cards and requested_cards)
@@ -43,21 +48,21 @@ router.get('/:user/topTraders', (req, res) => {
 });
 
 // // MIGHT HAVE
-// router.get('/:user', (req, res) => {
+// router.get('/', (req, res) => {
 //     res.send('find other users');
 // });
 
 // user's trades
 
-// router.get(':user/trades', (req, res) => {
+// router.get('/trades', (req, res) => {
 //     res.send('get trades for user');
 //     // SHOULD HAVE
 // });
 
 // MUST HAVE
-router.post(':user/trade', (req, res) => {
+router.post('/trade', (req, res) => {
     res.send('create trade for user');
-    const { offeror } = req.params;
+    const offeror = req.query.offeror;
     const { offeree, offeredCards, requestedCards } = req.body;
 
     // tradeId = INSERT INTO trades (offeror, offeree)
@@ -66,9 +71,9 @@ router.post(':user/trade', (req, res) => {
 });
 
 // MUST HAVE
-router.patch(':user/trade', (req, res) => {
+router.patch('/trade', (req, res) => {
     res.send('update trade for user (accept, reject, etc.)');
-    const { user } = req.params;
+    const user = req.query.user;
     const { tradeId, status } = req.body;
 
     // UPDATE trades SET status = status WHERE tradeId = tradeId
@@ -77,10 +82,10 @@ router.patch(':user/trade', (req, res) => {
 // ownedCards
 
 // MUST HAVE
-router.put(':user/ownedCards', (req, res) => {
+router.put('/ownedCards', (req, res) => {
     res.send('set list of users owned cards');
 
-    const { user } = req.params;
+    const user = req.query.user;
     const { cards } = req.body;
 
     let ownedCards = [];
@@ -91,7 +96,7 @@ router.put(':user/ownedCards', (req, res) => {
     return ownedCards;
 });
 
-// router.get(':user/ownedCards', (req, res) => {
+// router.get('/ownedCards', (req, res) => {
 //     res.send('get list of cards owned by user');
 //     // MIGHT HAVE since topTraders already does this
 //     // only would be necessary for "user" profile page
@@ -99,9 +104,9 @@ router.put(':user/ownedCards', (req, res) => {
 
 // requestedCards
 
-router.put(':users/requestedCards', (req, res) => {
+router.put('/requestedCards', (req, res) => {
     res.send('add card to list of users requested cards');
-    const { user } = req.params;
+    const user = req.query.user;
     const { cards } = req.body;
     let ownedCards = [];
 
@@ -111,7 +116,7 @@ router.put(':users/requestedCards', (req, res) => {
     // MUST HAVE
 });
 
-// router.get(':user/requestedCards', (req, res) => {
+// router.get('/requestedCards', (req, res) => {
 //     res.send('get list of cards requested by user');
 //     // MIGHT HAVE since topTraders already does this
 //     // only would be necessary for "user" profile page
