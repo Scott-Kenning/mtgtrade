@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label";
 import { FormEvent, useState } from "react";
 import useUser from "@/hooks/user";
 import { api } from "@/lib/api";
-import { User } from "@/types/user";
+import { UserType } from "@/types/types";
 import { useRouter } from "next/navigation";
 
 export function LoginForm({
@@ -27,7 +27,7 @@ export function LoginForm({
 
     const res = await api.get(`/users`, { params: { email: email } });
     if (res.status === 200) {
-      const user = res.data as User;
+      const user = res.data as UserType;
       setUser(user);
       router.push("/");
     } else {
