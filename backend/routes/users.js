@@ -54,9 +54,9 @@ router.get('/', async (req, res) => {
 // find other users
 
 // MUST HAVE
-router.get('/topTraders', (req, res) => {
+router.get('/topTraders', async (req, res) => {
     const user = req.query.user;
-    // res.send('find best matches of other users to trade with');
+    // const user = "davmavidid@gmail.com";
 
     // select top 10 users with most cards in common (between owned_cards and requested_cards)
 
@@ -66,6 +66,32 @@ router.get('/topTraders', (req, res) => {
     // GROUP BY userId
     // ORDER BY COUNT(cardId) DESC
     // LIMIT 10
+
+    console.log(`user: ${user}`);
+    let userId = await getUserId(user);
+    let ownedCards = await supabase.from('owned_card').select('card_id').eq('user_id', userId);
+
+    // Use the owned cards and find matches among other users
+    let matches = [];
+    for (let card of ownedCards.data) {
+        console.log(`card: ${card.card_id}`);
+        let users = await supabase.from('wanted_card').select('user_id').eq('card_id', card.card_id);
+        console.log(`users: ${users.data}`);
+        for (let user of users.data) {
+            let match = matches.find(x => x.user_id === user.user_id);
+            if (match) {
+                match.count++;
+            } else {
+                matches.push({user_id: user.user_id, count: 1});
+            }
+        }
+    }
+
+    matches.sort((a, b) => b.count - a.count);
+    // console.log(`matches: ${matches}`);
+    let topMatches = matches.slice(0, 10);
+    console.log(`topMatches: ${topMatches}`);
+    return res.json({ topMatches: topMatches });
 });
 
 // // MIGHT HAVE
