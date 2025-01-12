@@ -25,8 +25,10 @@ export function LoginForm({
     e.preventDefault();
     console.log("Login", email);
 
-    const res = await api.get(`/users`, { params: { email: email } });
+    const res = await api.get(`/users`, { params: { user: email } });
+    console.log({ res });
     if (res.status === 200) {
+      console.log("Got data ", res.data);
       const user = res.data as UserType;
       setUser(user);
       router.push("/");

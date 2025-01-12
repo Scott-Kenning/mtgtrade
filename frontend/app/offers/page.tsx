@@ -18,7 +18,7 @@ const offer: OfferType = {
 const Offers = () => {
   return (
     <Container>
-      <Tabs defaultValue="sent" className="w-[100%] dark">
+      <Tabs defaultValue="recieved" className="w-[100%] dark">
         <TabsList className="w-[100%]">
           <TabsTrigger value="recieved" className="w-[100%]">
             Recieved
