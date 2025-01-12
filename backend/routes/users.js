@@ -26,6 +26,7 @@ router.get('/', async (req, res) => {
     // // res.send('find users info');
     console.log(`user: ${user}`);
     let userId = await getUserId(user);
+    let name = await supabase.from("users").select("name").eq('id', userId);
     // ownedCards = SELECT cardId FROM owned_cards WHERE email = user
     // let ownedCards = await supabase.from('owned_card').select('card_id').eq('user_id', userId);
     // TODO do let ownedCards = await supabase.from('owned_card').select('card_id').eq('user_id', userId); but grab card info from cards table
@@ -41,8 +42,11 @@ router.get('/', async (req, res) => {
 
     // console.log(`ownedCards: ${ownedCards.data}, requestedCards: ${requestedCards.data}, activeTrades: ${activeTrades.data}`);
     res.json({ 
+        id: userId,
+        email: user,
+        name: name?.data?.map((x) => x.name)[0],
         ownedCards: ownedCards?.data?.map((x) => x.card),
-        requestedCards: requestedCards?.data,
+        requestedCards: requestedCards?.data?.map((x) => x.card),
         activeTrades: activeTrades
     });
 });

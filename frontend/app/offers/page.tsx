@@ -11,8 +11,12 @@ import { OfferType } from "@/types/types";
 const offer: OfferType = {
   id: 1,
   offeringUserId: 1,
-  offeredCards: [{ id: 1, name: "a", set: "a" }],
-  requestedCards: [{ id: 2, name: "b", set: "b" }],
+  offeredCards: [
+    { id: 1, name: "a", set: "a", imageUri: "https://picsum.photos/200/300" },
+  ],
+  requestedCards: [
+    { id: 2, name: "b", set: "b", imageUri: "https://picsum.photos/200/300" },
+  ],
 };
 
 const Offers = () => {

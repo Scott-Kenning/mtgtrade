@@ -12,6 +12,7 @@ export type CardType = {
   id: number;
   name: string;
   set: string;
+  imageUri: string;
 };
 
 export type OfferType = {
