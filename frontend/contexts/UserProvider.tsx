@@ -1,12 +1,12 @@
 "use client";
 
-import { User } from "@/types/user";
+import { UserType } from "@/types/types";
 import axios from "axios";
 import { ReactNode, useEffect, useState } from "react";
 import UserContext from "./UserContext";
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<UserType | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -20,7 +20,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     setLoading(false);
   }, []);
 
-  const setUserAndStopLoading = (user: User) => {
+  const setUserAndStopLoading = (user: UserType) => {
     localStorage.setItem("user", JSON.stringify(user));
     setUser(user);
     setLoading(false);
