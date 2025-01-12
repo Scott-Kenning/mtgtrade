@@ -27,11 +27,13 @@ router.get('/', async (req, res) => {
     console.log(`user: ${user}`);
     let userId = await getUserId(user);
     // ownedCards = SELECT cardId FROM owned_cards WHERE email = user
-    let ownedCards = await supabase.from('owned_card').select('card_id').eq('user_id', userId);
+    // let ownedCards = await supabase.from('owned_card').select('card_id').eq('user_id', userId);
+    // TODO do let ownedCards = await supabase.from('owned_card').select('card_id').eq('user_id', userId); but grab card info from cards table
+    let ownedCards = await supabase.from('owned_card').select('card(id, name, image_uri, set)').eq('user_id', userId);
     console.log(`ownedCards: ${ownedCards.data} from ${userId}`);
     // let ownedCards = await supabase.from('owned_cards').select('*');
     // requestedCards = SELECT cardId FROM requested_cards WHERE email = user
-    let requestedCards = await supabase.from('wanted_card').select('card_id').eq('user_id', userId);
+    let requestedCards = await supabase.from('wanted_card').select('card(id, name, image_uri, set)').eq('user_id', userId);
     console.log(`requestedCards: ${requestedCards.data} from ${userId}`);
     // activeTrades = SELECT * FROM trades WHERE offeree = (SELECT userId FROM users WHERE email = user) status = 'active'
     let activeTrades = await supabase.from('trades').select('*').eq('recipient', userId).eq('status', 'pending');
@@ -39,8 +41,8 @@ router.get('/', async (req, res) => {
 
     // console.log(`ownedCards: ${ownedCards.data}, requestedCards: ${requestedCards.data}, activeTrades: ${activeTrades.data}`);
     res.json({ 
-        ownedCards: ownedCards?.data?.map(x => x.card_id),
-        requestedCards: requestedCards?.data?.map(x => x.card_id), 
+        ownedCards: ownedCards?.data?.map((x) => x.card),
+        requestedCards: requestedCards?.data,
         activeTrades: activeTrades
     });
 });
