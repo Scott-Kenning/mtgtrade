@@ -10,7 +10,9 @@ router.get('/search/:substring', async (req, res) => {
 
     try {
         const cards = await supabase.from('card').select('*').ilike('name', "%" + substring + "%");
-        return res.status(200).send({ cards: cards });
+        // set count of response
+        cards.count = cards.data.length;
+        return res.status(200).send({ cards: cards});
     }
     catch (err) {
         console.log(err);

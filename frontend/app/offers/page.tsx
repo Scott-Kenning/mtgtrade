@@ -18,7 +18,7 @@ const offer: OfferType = {
 const Offers = () => {
   return (
     <Container>
-      <Tabs defaultValue="sent" className="w-[100%] dark">
+      <Tabs defaultValue="recieved" className="w-[100%] dark">
         <TabsList className="w-[100%]">
           <TabsTrigger value="recieved" className="w-[100%]">
             Recieved
@@ -28,9 +28,11 @@ const Offers = () => {
           </TabsTrigger>
         </TabsList>
         <TabsContent value="recieved">
-          <OfferList offers={[offer]} />
+          <OfferList offers={[offer]} isReceivedOffers={true} />
         </TabsContent>
-        <TabsContent value="sent"></TabsContent>
+        <TabsContent value="sent">
+          <OfferList offers={[offer]} isReceivedOffers={false} />
+        </TabsContent>
       </Tabs>
     </Container>
   );

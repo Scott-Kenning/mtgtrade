@@ -1,6 +1,6 @@
 import { CardType } from "@/types/types";
 
-const Card = (props: { card: CardType }) => {
+export const Card = (props: { card: CardType }) => {
   return (
     <div className="rounded w-100">
       <h2>{props.card.name}</h2>
